@@ -1,0 +1,22 @@
+[
+  {
+    "complainant_name": "rahul",
+    "phone": "7778885555",
+    "incident_date": "2022-05-02",
+    "incident_location": "bangalore",
+    "accused_name": "aadarsh",
+    "crime_type": "land ",
+    "incident_description": "hii he stoole my land",
+    "witnesses": "rajesh 887854777"
+  },
+  {
+    "complainant_name": "rahul",
+    "phone": "894384981",
+    "incident_date": "2022-05-25",
+    "incident_location": "bangalore",
+    "accused_name": "aadarsh",
+    "crime_type": "land",
+    "incident_description": "he took my land",
+    "witnesses": "rajesh 7788555455"
+  }
+]

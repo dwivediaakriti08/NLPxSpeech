@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Legal Form Filing</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: hsla(30, 93%, 16%, 0.508); padding: 20px; }
+    h1 { color: #333; }
+    .container { background: rgba(183, 109, 6, 0.237); padding: 20px; border-radius: 8px; width: 600px; }
+    label { display: block; margin-top: 10px; font-weight: bold; }
+    input, textarea, select { 
+      width: 100%; padding: 8px; margin-top: 5px; 
+      border: 1px solid #ccc; border-radius: 5px; 
+    }
+    button { margin-top: 15px; padding: 10px; background: #007BFF; color: white; 
+             border: none; border-radius: 5px; cursor: pointer; }
+    button:hover { background: #0056b3; }
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background: #f0f0f0; }
+  </style>
+</head>
+<body>
+  <h1>Legal Form Filing</h1>
+  <div class="container">
+    <label for="caseType">Choose Case Type:</label>
+    <select id="caseType">
+      <option value="">--Select--</option>
+    </select>
+
+    <form id="caseForm"></form>
+
+    <button id="viewSubmissionsBtn" type="button">📂 View Submissions</button>
+    <div id="submissionsContainer"></div>
+  </div>
+
+  <script>
+    const API_BASE = "http://127.0.0.1:8000"; 
+    const caseTypeSelect = document.getElementById("caseType");
+    const caseForm = document.getElementById("caseForm");
+    const submissionsContainer = document.getElementById("submissionsContainer");
+
+    // Load available forms
+    async function loadForms() {
+      try {
+        const res = await fetch(`${API_BASE}/forms`);
+        const data = await res.json();
+        data.cases.forEach(formId => {
+          const option = document.createElement("option");
+          option.value = formId;
+          option.textContent = formId.replace("_", " ").toUpperCase();
+          caseTypeSelect.appendChild(option);
+        });
+      } catch (err) {
+        console.error("Error fetching forms:", err);
+      }
+    }
+
+    // Load form fields
+    async function loadFormFields(formId) {
+      caseForm.innerHTML = "";
+      submissionsContainer.innerHTML = "";
+      if (!formId) return;
+
+      const res = await fetch(`${API_BASE}/forms/${formId}`);
+      const { form } = await res.json();
+
+      const title = document.createElement("h2");
+      title.textContent = form.title;
+      caseForm.appendChild(title);
+
+      form.fields.forEach(field => {
+        const label = document.createElement("label");
+        label.textContent = field.label;
+        caseForm.appendChild(label);
+
+        let input;
+        if (field.type === "text") {
+          input = document.createElement("textarea");
+        } else {
+          input = document.createElement("input");
+          input.type = field.type === "string" ? "text" : field.type;
+        }
+        input.name = field.name;
+        caseForm.appendChild(input);
+      });
+
+      const btn = document.createElement("button");
+      btn.textContent = "Submit";
+      btn.type = "button";
+      btn.onclick = () => submitForm(formId);
+      caseForm.appendChild(btn);
+    }
+
+    // Submit form data
+    async function submitForm(formId) {
+      const formData = {};
+      [...caseForm.querySelectorAll("input, textarea")].forEach(el => {
+        formData[el.name] = el.value;
+      });
+
+      try {
+        const res = await fetch(`${API_BASE}/submit/${formId}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData)
+        });
+
+        const result = await res.json();
+        alert("✅ Submitted successfully: " + JSON.stringify(result));
+      } catch (err) {
+        console.error("Error submitting form:", err);
+        alert("❌ Failed to submit form");
+      }
+    }
+
+    // View submissions
+    async function viewSubmissions() {
+      const formId = caseTypeSelect.value;
+      if (!formId) {
+        alert("Please select a case type first!");
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/submissions/${formId}`);
+        const { submissions } = await res.json();
+
+        submissionsContainer.innerHTML = "<h3>📂 Submissions</h3>";
+
+        if (!submissions.length) {
+          submissionsContainer.innerHTML += "<p>No submissions found.</p>";
+          return;
+        }
+
+        const table = document.createElement("table");
+        const headerRow = document.createElement("tr");
+
+        Object.keys(submissions[0]).forEach(key => {
+          const th = document.createElement("th");
+          th.textContent = key;
+          headerRow.appendChild(th);
+        });
+        table.appendChild(headerRow);
+
+        submissions.forEach(sub => {
+          const row = document.createElement("tr");
+          Object.values(sub).forEach(val => {
+            const td = document.createElement("td");
+            td.textContent = val;
+            row.appendChild(td);
+          });
+          table.appendChild(row);
+        });
+
+        submissionsContainer.appendChild(table);
+      } catch (err) {
+        console.error("Error fetching submissions:", err);
+        submissionsContainer.innerHTML = "<p>❌ Failed to load submissions.</p>";
+      }
+    }
+
+    // Event listeners
+    caseTypeSelect.addEventListener("change", e => loadFormFields(e.target.value));
+    document.getElementById("viewSubmissionsBtn").addEventListener("click", viewSubmissions);
+
+    // Init
+    loadForms();
+  </script>
+</body>
+</html>

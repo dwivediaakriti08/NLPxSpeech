@@ -1,0 +1,13 @@
+{
+  "title": "Criminal Case Form",
+  "fields": [
+    { "name": "complainant_name", "type": "string", "label": "Complainant Full Name" },
+    { "name": "phone", "type": "string", "label": "Phone Number" },
+    { "name": "incident_date", "type": "date", "label": "Date of Incident" },
+    { "name": "incident_location", "type": "string", "label": "Incident Location" },
+    { "name": "accused_name", "type": "string", "label": "Accused Person's Name" },
+    { "name": "crime_type", "type": "string", "label": "Type of Crime" },
+    { "name": "incident_description", "type": "text", "label": "Detailed Description of the Incident" },
+    { "name": "witnesses", "type": "text", "label": "Names & Contact Details of Witnesses (if any)" }
+  ]
+}

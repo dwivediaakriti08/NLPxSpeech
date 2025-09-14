@@ -1,0 +1,34 @@
+{
+  "name_field": {
+    "en": "Enter your legal name as it appears on official ID.",
+    "hi": "अपना नाम वैसा ही भरें जैसा आधिकारिक पहचान पत्र पर है।"
+  },
+  "phone_field": {
+    "en": "Use a 10-digit Indian mobile number.",
+    "hi": "10 अंकों का मोबाइल नंबर भरें।"
+  },
+  "address_field": {
+    "en": "Provide current residential address.",
+    "hi": "वर्तमान आवासीय पता लिखें।"
+  },
+  "pincode_field": {
+    "en": "6-digit India PIN code.",
+    "hi": "6 अंकों का पिन कोड।"
+  },
+  "subject_field": {
+    "en": "One line summary of why you are applying.",
+    "hi": "आवेदन का संक्षिप्त कारण।"
+  },
+  "description_field": {
+    "en": "Explain the facts clearly. Dates, places, people involved.",
+    "hi": "तथ्यों को स्पष्ट लिखें — तिथि, स्थान, संबंधित व्यक्ति।"
+  },
+  "doi_field": {
+    "en": "Use DD/MM/YYYY format if unsure.",
+    "hi": "यदि निश्चित नहीं, DD/MM/YYYY प्रारूप का उपयोग करें।"
+  },
+  "declaration_truth": {
+    "en": "You legally confirm the information is accurate to the best of your knowledge.",
+    "hi": "आप कानूनी रूप से पुष्टि करते हैं कि जानकारी आपके ज्ञान के अनुसार सही है।"
+  }
+}
